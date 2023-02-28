@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { Puzzle } from './types';
 import { initGame, shufflePuzzle, checkWin } from './gameLogic';
 import { Tile } from './components/Tile';
+import JSConfetti from 'js-confetti';
 
 function App() {
   const [puzzle, setPuzzle] = useState<Puzzle>(initGame(3, 3));
   const [emptyCoordinate, setEmptyCoordinates] = useState([2, 2]);
   const [clickCounts, setClicks] = useState(0);
+  const jsConfetti = new JSConfetti()
 
   const handleClick = (row: number, column: number) => {
     setClicks(clickCounts + 1);
@@ -27,7 +29,10 @@ function App() {
     }
 
     if(checkWin(newPuzzle)) {
-      console.log('youve won!!');
+      jsConfetti.addConfetti({
+        confettiRadius: 6,
+        confettiNumber: 1000
+      });
     }
   };
 
@@ -39,22 +44,28 @@ function App() {
   }
 
   return (
-    <div>
-      <button onClick={startGame}>Shuffle</button>
-      <p>Amount of clicks: { clickCounts }</p>
-      {puzzle.map((row, index) => {
-        return (
-          <div className="row" key={`row-${index}`}>
-            {row.map((column, index2) => (
-              <Tile
-                key={`row${index}column${index2}`}
-                value={column}
-                onClick={() => handleClick(index, index2)}
-              />
-            ))}
-          </div>
-        );
-      })}
+    <div className='container'>
+      <div className='wrapper'>
+        <div className='game-panel'>
+          <button onClick={startGame}>Shuffle</button>
+          <p>Amount of clicks: { clickCounts }</p>
+        </div>
+        <div className='puzzle-container'>
+          {puzzle.map((row, index) => {
+            return (
+              <div className="row" key={`row-${index}`}>
+                {row.map((column, index2) => (
+                  <Tile
+                    key={`row${index}column${index2}`}
+                    value={column}
+                    onClick={() => handleClick(index, index2)}
+                  />
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
