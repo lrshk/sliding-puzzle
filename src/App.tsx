@@ -4,11 +4,13 @@ import { Puzzle } from './types';
 import { initGame, shufflePuzzle, checkWin } from './gameLogic';
 import { Tile } from './components/Tile';
 import JSConfetti from 'js-confetti';
+import { BoardGame } from './components/BoardGame';
 
 function App() {
   const [puzzle, setPuzzle] = useState<Puzzle>(initGame(3, 3));
   const [emptyCoordinate, setEmptyCoordinates] = useState([2, 2]);
   const [clickCounts, setClicks] = useState(0);
+  const [boardSize, setBoardSize] = useState([3, 3]);
   const jsConfetti = new JSConfetti()
 
   const handleClick = (row: number, column: number) => {
@@ -47,10 +49,16 @@ function App() {
     <div className='container'>
       <div className='wrapper'>
         <div className='game-panel'>
+          <p>
+            Set your board size
+            <input type="number" value={boardSize[0]} onChange={(e) => setBoardSize([parseInt(e.target.value), boardSize[1]])} /> x 
+            <input type="number" value={boardSize[1]} onChange={(e) => setBoardSize([boardSize[0], parseInt(e.target.value)])} />
+            <button onClick={() => setPuzzle(initGame(boardSize[0], boardSize[1]))}>Apply</button>
+          </p>
           <button onClick={startGame}>Shuffle</button>
           <p>Amount of clicks: { clickCounts }</p>
         </div>
-        <div className='puzzle-container'>
+        <BoardGame columns={puzzle[0].length}>
           {puzzle.map((row, index) => {
             return (
               <div className="row" key={`row-${index}`}>
@@ -64,7 +72,7 @@ function App() {
               </div>
             );
           })}
-        </div>
+        </BoardGame>
       </div>
     </div>
   );
