@@ -8,7 +8,7 @@ type TileType = {
 export const Tile: FC<TileType> = ({ value, onClick }) => {
   return (
     <div className="column" onClick={onClick}>
-      {value}
+      {value === 0 ? '' : value}
     </div>
   );
 };

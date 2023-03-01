@@ -1,4 +1,4 @@
-import { Puzzle } from './types';
+import { Coordinates, Puzzle } from './types';
 
 export const initGame = (width: number, height: number): Puzzle => {
   const puzzleMatrix: Puzzle = [];
@@ -15,10 +15,10 @@ export const initGame = (width: number, height: number): Puzzle => {
   return puzzleMatrix;
 };
 
-export const shufflePuzzle = (puzzle: Puzzle): { puzzle: Puzzle, emptyGap: number[] } => {
+export const shufflePuzzle = (puzzle: Puzzle): { puzzle: Puzzle, emptyGap: Coordinates } => {
   let currentIndex: number = puzzle.length * puzzle[0].length,
     randomIndex: number,
-    emptyGap: number[] = [];
+    emptyGap: Coordinates;
   const numberList: number[] = puzzle.flat();
 
   while (currentIndex !== 0) {
@@ -45,6 +45,7 @@ export const shufflePuzzle = (puzzle: Puzzle): { puzzle: Puzzle, emptyGap: numbe
 
   return {
     puzzle: newPuzzle, 
+    //@ts-ignore
     emptyGap
   }
 };
@@ -52,4 +53,12 @@ export const shufflePuzzle = (puzzle: Puzzle): { puzzle: Puzzle, emptyGap: numbe
 export const checkWin = (puzzle: Puzzle) => {
   const puzzleWin = initGame(puzzle.length, puzzle[0].length);
   return puzzleWin.flat().join(',') === puzzle.flat().join(',');
+}
+
+export const isInRange = (coordinates: number[], puzzle: Puzzle): boolean => {
+  const [x, y] = coordinates;
+  const rowLength = puzzle.length;
+  const columnLength = puzzle[0].length;
+
+  return (x >= 0 && x < rowLength) && (y >= 0 &&  y < columnLength);
 }
