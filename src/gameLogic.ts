@@ -1,4 +1,4 @@
-import { Coordinates, Puzzle } from './types';
+import { Coordinates, Puzzle, PuzzleSize } from './types';
 
 export const initGame = (width: number, height: number): Puzzle => {
   const puzzleMatrix: Puzzle = [];
@@ -61,4 +61,19 @@ export const isInRange = (coordinates: number[], puzzle: Puzzle): boolean => {
   const columnLength = puzzle[0].length;
 
   return (x >= 0 && x < rowLength) && (y >= 0 &&  y < columnLength);
+}
+
+export const calculateTilesImgCoordinates = (puzzleSize: PuzzleSize): string[] => {
+  const [width, height] = puzzleSize;
+  const widthPercentage = 1/(width - 1)*100;
+  const heightPercentage = 1/(height - 1)*100;
+  const coordinatesArray = ['0']; // Keep 0 for empty gap
+
+  for(let i = 0; i < width; i++) {
+    for(let j = 0; j < height; j++) {
+      coordinatesArray.push(`${heightPercentage * j}% ${widthPercentage * i}%`);
+    }
+  }
+
+  return coordinatesArray;
 }
