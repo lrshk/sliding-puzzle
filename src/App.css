@@ -16,11 +16,6 @@
   font-size: 10vmin;
 }
 
-.column:hover {
-  background-color: rgb(242, 253, 199);
-  color:rgb(198, 148, 10);
-}
-
 .container {
   display: flex;
   align-items: center;

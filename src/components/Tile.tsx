@@ -11,9 +11,12 @@ type TileType = {
 const TileStyled = styled.div<{ imageCoordinates: string }>`
   background-position: ${props => props.imageCoordinates};
   background-image: ${props => props.imageCoordinates === '0' && 'none !important'};
+  &:hover {
+    opacity: 0.6;
+  }
 `
 
-export const Tile: FC<TileType> = ({ value, onClick, imageCoordinates }) => {
+export const Tile: FC<TileType> = ({ onClick, imageCoordinates }) => {
   return (
     <TileStyled className="column" onClick={onClick} imageCoordinates={imageCoordinates}/>
   );

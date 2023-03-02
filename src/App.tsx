@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import './App.css';
-import { GameTriggers } from './types';
+import { GameTriggers, PuzzleSize } from './types';
 import { BoardGame } from './components/BoardGame';
 
 function App() {
   
   const [clickCounts, setClicks] = useState(0);
-  const [boardSize, setBoardSize] = useState<[number, number]>([3, 3]);
+  const [boardSize, setBoardSize] = useState<PuzzleSize>([3, 3]);
   const [gameTriggers, setGameTriggers] = useState<GameTriggers | undefined>();
 
   return (

@@ -6,7 +6,7 @@ import { Coordinates, GameTriggers, Puzzle, PuzzleSize } from "../types";
 import { Tile } from "./Tile";
 
 type BoardGameType = {
-  size: [number, number];
+  size: PuzzleSize;
   onMove: () => void;
   initGameTriggers: (triggerObj: GameTriggers) => void;
 }
@@ -22,7 +22,7 @@ export const BoardGameStyled = styled.div<{ columns: number, bgSize: number }>`
 
     & > .column {
       background-size: ${props => `${props.bgSize}px ${props.bgSize}px`};
-      background-image: url("http://placekitten.com/800/800");
+      background-image: url("/cats.webp");
 
     }
   }
