@@ -10,7 +10,7 @@ function App() {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
 
   useEffect(() => {
-    const [empty, rows, columns] = document.location.pathname.split('/');
+    const [, rows, columns] = document.location.pathname.split('/');
     setBoardSize([parseInt(rows || '3'), parseInt(columns || '3')]);
   }, []);
 
@@ -26,9 +26,10 @@ function App() {
           gameStarted ? 
           <p className='clicks'>Amount of clicks: { clickCounts }</p> 
         : 
-          <button className="start-btn" onClick={handleStartGame}>Start game</button> 
+          <button className='start-btn' onClick={handleStartGame}>Start game</button> 
         }
-        <BoardGame size={boardSize}
+        <BoardGame 
+          size={boardSize}
           onMove={() => { setClicks(clickCounts + 1); } }
           initGameTriggers={(triggers) => setGameTriggers(triggers)}   
         />

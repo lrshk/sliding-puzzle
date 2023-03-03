@@ -1,9 +1,9 @@
-import JSConfetti from "js-confetti";
-import { FC, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { calculateTilesImgCoordinates, checkWin, initGame, shufflePuzzle } from "../gameLogic";
-import { Coordinates, GameTriggers, Puzzle, PuzzleSize } from "../types";
-import { Tile } from "./Tile";
+import JSConfetti from 'js-confetti';
+import { FC, SetStateAction, useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { calculateTilesImgCoordinates, checkWin, initGame, shufflePuzzle } from '../gameLogic';
+import { Coordinates, GameTriggers, Puzzle, PuzzleSize } from '../types';
+import { Tile } from './Tile';
 
 type BoardGameType = {
   size: PuzzleSize;
@@ -22,39 +22,37 @@ export const BoardGameStyled = styled.div<{ columns: number, bgSize: number }>`
 
     & > .column {
       background-size: ${props => `${props.bgSize}px ${props.bgSize}px`};
-      background-image: url("/cats.webp");
-
+      background-image: url('/cats.webp');
     }
   }
 `;
 
 export const BoardGame: FC<BoardGameType> = ({
-  size: boardSize,
+  size: [rows, columns],
   onMove,
   initGameTriggers
 }) => {
-  const [puzzle, setPuzzle] = useState<Puzzle>(initGame(boardSize[0], boardSize[1]));
-  const [emptyCoordinate, setEmptyCoordinates] = useState<Coordinates>([boardSize[0]-1, boardSize[0]-1]);
-  const jsConfetti = new JSConfetti();
-  const [size, setSize] = useState(0);
-  const [coordinates, setCoordinates] = useState<string[]>(calculateTilesImgCoordinates(boardSize));
+  const [puzzle, setPuzzle] = useState<Puzzle>(initGame(rows, columns));
+  const [emptyCoordinate, setEmptyCoordinates] = useState<Coordinates>([rows-1, columns-1]);
+  const [renderedSize, setRenderedSize] = useState(0);
+  const [imageCoordinates, setImageCoordinates] = useState<string[]>(calculateTilesImgCoordinates([rows, columns]));
   const [canPlay, setCanPlay] = useState<boolean>(false);
   const elementRef = useRef<HTMLDivElement>(null);
+  const jsConfetti = new JSConfetti();
 
   useEffect(() => {
-    // @ts-ignore
-    setSize(elementRef.current?.clientWidth);
+    setRenderedSize(elementRef.current?.clientWidth as SetStateAction<number>);
   }, []);
 
   useEffect(() => {
-    setPuzzle(initGame(boardSize[0], boardSize[1]));
-    setEmptyCoordinates([boardSize[0]-1, boardSize[1]-1]);
-    setCoordinates(calculateTilesImgCoordinates(boardSize));
-  }, [boardSize])
+    setPuzzle(initGame(rows, columns));
+    setEmptyCoordinates([rows-1, columns-1]);
+    setImageCoordinates(calculateTilesImgCoordinates([rows, columns]));
+  }, [rows, columns])
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setSize(elementRef.current?.clientWidth || 0);
+      setRenderedSize(elementRef.current?.clientWidth || 0);
     };
 
     window.addEventListener('resize', handleWindowResize);
@@ -62,7 +60,7 @@ export const BoardGame: FC<BoardGameType> = ({
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
-  });
+  }, []);
 
   useEffect(() => {
     initGameTriggers({
@@ -77,7 +75,7 @@ export const BoardGame: FC<BoardGameType> = ({
   }, []);
   
   useEffect(() => {
-    setCoordinates(calculateTilesImgCoordinates([puzzle.length, puzzle[0].length]));
+    setImageCoordinates(calculateTilesImgCoordinates([puzzle.length, puzzle[0].length]));
   }, [puzzle])
 
   const startGame = (rows: number, columns: number) => {
@@ -115,21 +113,25 @@ export const BoardGame: FC<BoardGameType> = ({
     }
   };
 
-  return <BoardGameStyled columns={ puzzle[0].length } bgSize={size} ref={elementRef}>
-    {puzzle.map((row, index) => {
-      return (
-        <div className="row" key={`row-${index}`}>
-          {row.map((column, index2) => (
-            <Tile
-              key={`row${index}column${index2}`}
-              value={column}
-              onClick={() => handleClick(index, index2)}
-              imageCoordinates={coordinates[column]}
-              disabled={!canPlay}
-            />
-          ))}
-        </div>
-      );
-    })}
+  return <BoardGameStyled columns={ puzzle[0].length } bgSize={renderedSize} ref={elementRef}>
+    {
+      puzzle.map((row, rowIndex) => {
+        return (
+          <div className='row' key={`row-${rowIndex}`}>
+            {
+              row.map((tileValue, columnIndex) => (
+                <Tile
+                  key={`row${rowIndex}-column${columnIndex}`}
+                  value={tileValue}
+                  onClick={() => handleClick(rowIndex, columnIndex)}
+                  imageCoordinates={imageCoordinates[tileValue]}
+                  disabled={!canPlay}
+                />
+              ))
+            }
+          </div>
+        );
+      })
+    }
   </BoardGameStyled>
 }

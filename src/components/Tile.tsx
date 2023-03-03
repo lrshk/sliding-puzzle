@@ -1,5 +1,5 @@
-import { FC } from "react";
-import styled from "styled-components";
+import { FC } from 'react';
+import styled from 'styled-components';
 
 type TileType = {
   value: number,
@@ -23,6 +23,6 @@ const TileStyled = styled.button<{ imageCoordinates: string }>`
 
 export const Tile: FC<TileType & React.HTMLProps<HTMLButtonElement>> = ({ onClick, imageCoordinates, disabled }) => {
   return (
-    <TileStyled className="column" onClick={onClick} imageCoordinates={imageCoordinates} disabled={ disabled }/>
+    <TileStyled className='column' onClick={onClick} imageCoordinates={imageCoordinates} disabled={ disabled }/>
   );
 };

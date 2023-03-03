@@ -18,7 +18,7 @@ export const initGame = (width: number, height: number): Puzzle => {
 export const shufflePuzzle = (puzzle: Puzzle): { puzzle: Puzzle, emptyGap: Coordinates } => {
   let currentIndex: number = puzzle.length * puzzle[0].length,
     randomIndex: number,
-    emptyGap: Coordinates;
+    emptyGap: Coordinates = [0, 0];
   const numberList: number[] = puzzle.flat();
 
   while (currentIndex !== 0) {
@@ -44,8 +44,7 @@ export const shufflePuzzle = (puzzle: Puzzle): { puzzle: Puzzle, emptyGap: Coord
   }
 
   return {
-    puzzle: newPuzzle, 
-    //@ts-ignore
+    puzzle: newPuzzle,
     emptyGap
   }
 };
