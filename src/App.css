@@ -3,6 +3,16 @@
   text-align: center;
 }
 
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
 .row {
   display: grid;
   width: 100%;
@@ -22,6 +32,7 @@
   justify-content: center;
   width: 100vmin;
   height: 100vmin;
+  margin: 0 auto;
 }
 
 .puzzle-container {
@@ -29,11 +40,13 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
+  justify-content: center;
 }
 
 .wrapper {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .game-panel {
@@ -46,4 +59,60 @@
 
 .game-panel:hover {
   opacity: 1;
+}
+
+.clicks {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  font-size: 1.2rem;
+  background-color: #fff;
+  padding: 8px;
+  z-index: 2;
+}
+
+.start-btn::before {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+}
+
+.start-btn {
+  appearance: none;
+  backface-visibility: hidden;
+  background-color: #27ae60;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.5;
+  outline: none;
+  overflow: hidden;
+  padding: 13px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(150%);
+  z-index: 2;
+}
+
+.start-btn:hover {
+  background-color: #1e8449;
+  opacity: 1;
+  box-shadow: rgba(39, 174, 96, .2) 0 6px 12px;
 }

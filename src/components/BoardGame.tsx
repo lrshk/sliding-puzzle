@@ -29,21 +29,28 @@ export const BoardGameStyled = styled.div<{ columns: number, bgSize: number }>`
 `;
 
 export const BoardGame: FC<BoardGameType> = ({
+  size: boardSize,
   onMove,
   initGameTriggers
 }) => {
-  const DEFAULT_SIZE: PuzzleSize = [3, 3];
-  const [puzzle, setPuzzle] = useState<Puzzle>(initGame(DEFAULT_SIZE[0], DEFAULT_SIZE[1]));
-  const [emptyCoordinate, setEmptyCoordinates] = useState<Coordinates>([DEFAULT_SIZE[0]-1, DEFAULT_SIZE[0]-1]);
+  const [puzzle, setPuzzle] = useState<Puzzle>(initGame(boardSize[0], boardSize[1]));
+  const [emptyCoordinate, setEmptyCoordinates] = useState<Coordinates>([boardSize[0]-1, boardSize[0]-1]);
   const jsConfetti = new JSConfetti();
   const [size, setSize] = useState(0);
-  const [coordinates, setCoordinates] = useState<string[]>(calculateTilesImgCoordinates(DEFAULT_SIZE));
+  const [coordinates, setCoordinates] = useState<string[]>(calculateTilesImgCoordinates(boardSize));
+  const [canPlay, setCanPlay] = useState<boolean>(false);
   const elementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // @ts-ignore
     setSize(elementRef.current?.clientWidth);
   }, []);
+
+  useEffect(() => {
+    setPuzzle(initGame(boardSize[0], boardSize[1]));
+    setEmptyCoordinates([boardSize[0]-1, boardSize[1]-1]);
+    setCoordinates(calculateTilesImgCoordinates(boardSize));
+  }, [boardSize])
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -77,9 +84,14 @@ export const BoardGame: FC<BoardGameType> = ({
     const { puzzle: newPuzzle, emptyGap: newEmptyGap } = shufflePuzzle(initGame(rows, columns));
     setPuzzle(newPuzzle);
     setEmptyCoordinates(newEmptyGap);
+    setCanPlay(true);
   }
 
   const handleClick = (row: number, column: number) => {
+    if(!canPlay) {
+      return;
+    }
+
     const rowDelta = Math.abs(emptyCoordinate[0] - row);
     const columnDelta = Math.abs(emptyCoordinate[1] - column);
     const newPuzzle = puzzle.slice();
@@ -113,6 +125,7 @@ export const BoardGame: FC<BoardGameType> = ({
               value={column}
               onClick={() => handleClick(index, index2)}
               imageCoordinates={coordinates[column]}
+              disabled={!canPlay}
             />
           ))}
         </div>

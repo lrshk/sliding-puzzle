@@ -8,16 +8,21 @@ type TileType = {
   withImage?: boolean
 }
 
-const TileStyled = styled.div<{ imageCoordinates: string }>`
+const TileStyled = styled.button<{ imageCoordinates: string }>`
   background-position: ${props => props.imageCoordinates};
   background-image: ${props => props.imageCoordinates === '0' && 'none !important'};
+  
   &:hover {
-    opacity: 0.6;
+    opacity: 0.8;
+  }
+
+  &:disabled {
+    opacity: 0.4;
   }
 `
 
-export const Tile: FC<TileType> = ({ onClick, imageCoordinates }) => {
+export const Tile: FC<TileType & React.HTMLProps<HTMLButtonElement>> = ({ onClick, imageCoordinates, disabled }) => {
   return (
-    <TileStyled className="column" onClick={onClick} imageCoordinates={imageCoordinates}/>
+    <TileStyled className="column" onClick={onClick} imageCoordinates={imageCoordinates} disabled={ disabled }/>
   );
 };
