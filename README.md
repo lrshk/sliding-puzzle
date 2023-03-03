@@ -1,3 +1,20 @@
+# Project explanation
+
+Requirements of the sliding puzzle game implemented:
+
+Must haves:
+- A game field of 3x3 with 8 blocks and one gap; if a block is clicked that borders the gap, it moves into the gap
+- Random start locations; but without any duplicate blocks
+- ~~The blocks are numbered; 1 to 8~~ Image bonus was implemented
+- Responsiveness; the game size adjusts to screen size
+- A counter tracking the number of moves
+
+Nice-to-have:
+
+- Parts of an image instead of numbers in the blocks
+- Win-condition; if successfully completed, give some kind of feedback
+- Dynamic number of blocks; some kind of input whereby the size of the game (and number of blocks) can be increased from 3x3 to any dimension - **Navigate to `localhost:3000/:rows/:columns` for custom size of puzzle. For example, `localhost:3000/4/4` will give you a 4x4 puzzle. If not size indicated it will use the 3x3 by default.**
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
