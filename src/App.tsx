@@ -19,7 +19,7 @@ function App() {
             <input type="number" value={boardSize[1]} onChange={(e) => setBoardSize([boardSize[0], parseInt(e.target.value)])} />
             <button onClick={() => gameTriggers?.setSize(boardSize[0], boardSize[1]) }>Apply</button>
           </p>
-          <button onClick={gameTriggers?.start}>Shuffle</button>
+          <button onClick={() => gameTriggers?.start(boardSize[0], boardSize[1])}>Shuffle</button>
           <p>Amount of clicks: { clickCounts }</p>
         </div>
         <BoardGame size={boardSize}

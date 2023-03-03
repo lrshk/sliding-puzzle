@@ -73,8 +73,8 @@ export const BoardGame: FC<BoardGameType> = ({
     setCoordinates(calculateTilesImgCoordinates([puzzle.length, puzzle[0].length]));
   }, [puzzle])
 
-  const startGame = () => {
-    const { puzzle: newPuzzle, emptyGap: newEmptyGap } = shufflePuzzle(puzzle);
+  const startGame = (rows: number, columns: number) => {
+    const { puzzle: newPuzzle, emptyGap: newEmptyGap } = shufflePuzzle(initGame(rows, columns));
     setPuzzle(newPuzzle);
     setEmptyCoordinates(newEmptyGap);
   }
